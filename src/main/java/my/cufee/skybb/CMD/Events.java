@@ -37,7 +37,7 @@ public class Events implements CommandExecutor {
         List<String> Players = new ArrayList<>();
 
         for (Player player : Bukkit.getOnlinePlayers()) {
-            Players.add(player.getName()); // Берем имя игрока
+            Players.add(player.getName()); // Берем имя игрока.
         }
         int maxPlayerOnServer = getRandomAmount(Bukkit.getOnlinePlayers().size());
 
