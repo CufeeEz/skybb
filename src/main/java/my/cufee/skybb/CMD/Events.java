@@ -38,4 +38,7 @@ public class Events implements CommandExecutor {
     private int getRandomAmount(int max) {
         return random.nextInt(max);
     }
+    private int tesssst(int max) {
+        return random.nextInt(max);
+    }
 }
