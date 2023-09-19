@@ -1,6 +1,7 @@
 package my.cufee.skybb.CMD;
 
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -10,7 +11,7 @@ import java.util.List;
 import java.util.Random;
 
 public class Events implements CommandExecutor {
-    private Random random;
+    private final Random random;
 
     public Events() {
         this.random = new Random();
@@ -18,27 +19,32 @@ public class Events implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender commandSender, Command command, String s, String[] args) {
-        // Ваш код команды
 
-        EventChest();
+
+        getRandomPlayer();
 
         return false;
     }
 
-    private void EventChest(){
+    private void setRandomChest(){
+        Player targetPlayer = Bukkit.getPlayer(getRandomPlayer());
+        Location LocationTargetPlayer = targetPlayer.getLocation();
+
+
+    }
+
+    private String getRandomPlayer(){
         List<String> Players = new ArrayList<>();
 
         for (Player player : Bukkit.getOnlinePlayers()) {
-            Players.add(player.getName()); // Берем имя игрока, а не преобразуем его в строку
+            Players.add(player.getName()); // Берем имя игрока
         }
-        int randomIndex = getRandomAmount(Bukkit.getOnlinePlayers().size());
-        Bukkit.broadcastMessage("Hello " + Players.get(randomIndex));
+        int maxPlayerOnServer = getRandomAmount(Bukkit.getOnlinePlayers().size());
+
+        return Players.get(maxPlayerOnServer);
     }
 
     private int getRandomAmount(int max) {
-        return random.nextInt(max);
-    }
-    private int tesssst(int max) {
         return random.nextInt(max);
     }
 }
