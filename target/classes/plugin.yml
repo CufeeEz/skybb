@@ -1,0 +1,12 @@
+name: skybb
+version: '1.0-SNAPSHOT'
+main: my.cufee.skybb.Skybb
+api-version: '1.20'
+
+commands:
+  sbstart:
+    description: Запуск плагина
+  startgen:
+    description: Запуск игры
+  startEvents:
+    description: Запускает начало ивентов
