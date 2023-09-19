@@ -13,7 +13,7 @@ public class Events implements CommandExecutor {
     private Random random;
 
     public Events() {
-        this.random = new Random(); // Инициализация переменной random
+        this.random = new Random();
     }
 
     @Override
@@ -36,6 +36,6 @@ public class Events implements CommandExecutor {
     }
 
     private int getRandomAmount(int max) {
-        return random.nextInt(max); // Убрали "+ 1", так как индексы начинаются с 0
+        return random.nextInt(max);
     }
 }
