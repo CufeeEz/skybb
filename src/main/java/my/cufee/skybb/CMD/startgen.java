@@ -1,6 +1,7 @@
 package my.cufee.skybb.CMD;
 
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -34,7 +35,7 @@ public class startgen implements CommandExecutor {
                     int randomAmount = getRandomAmount();
 
                     player.getInventory().addItem(randomItem);
-                    player.sendMessage("Вы получили " + randomItem.getAmount() + " " + randomItem.getType().name());
+                    player.sendMessage(ChatColor.translateAlternateColorCodes('&', "&2&o Вы получили ") + randomItem.getAmount() + " " + ChatColor.translateAlternateColorCodes('&', "&c") + randomItem.getType().name());
                 }
             }
         };
