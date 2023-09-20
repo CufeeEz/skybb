@@ -1,5 +1,6 @@
 package my.cufee.skybb.CMD;
 
+import org.bukkit.Effect;
 import org.bukkit.block.Block;
 import org.bukkit.block.Chest;
 import org.bukkit.Bukkit;
@@ -13,7 +14,10 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.TNTPrimed;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 
+import my.cufee.skybb.util.AllPoitoinEffects;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,9 +34,23 @@ public class Events implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender commandSender, Command command, String s, String[] args) {
 
+        EventGetRandomEffect();
 
-        EventTNT();
         return false;
+    }
+
+    private void EventGetRandomEffect() {
+        Player targetPlayer = Bukkit.getPlayer(getRandomPlayer());
+        List<PotionEffectType> potionEffects = AllPoitoinEffects.givePoitionEffects();
+        PotionEffectType randomPotionEffectType = AllPoitoinEffects.getRandomPotionEffect(potionEffects);
+
+        int duration = random.nextInt(12000) + 1200; //  длительности эффекта (от 200 до 800 тиков)
+        int amplifier = random.nextInt(7); //  уровня эффекта (от 0 до 7)
+        PotionEffect randomPotionEffect = new PotionEffect(randomPotionEffectType, duration, amplifier);
+        String effectName = randomPotionEffect.getType().getName();
+
+        targetPlayer.addPotionEffect(randomPotionEffect);
+        Bukkit.broadcastMessage("Эффект " + effectName + " " + amplifier+1 + " уровня был выдан " + targetPlayer.getName() + " на " + duration/20 + " секунд");
     }
     private void EventTNT() {
         Player targetPlayer = Bukkit.getPlayer(getRandomPlayer());
@@ -42,7 +60,7 @@ public class Events implements CommandExecutor {
         tnt.setYield(5); // Установка мощности взрыва
         tnt.setFuseTicks(1);// Зажигаем ТНТ
     }
-    private void setRandomChest(){
+    private void EventRandomChest(){
         Player targetPlayer = Bukkit.getPlayer(getRandomPlayer());
         Location LocationSpawnedChest = targetPlayer.getLocation();
         LocationSpawnedChest.add(1.0 + getRandomAmountForSpawnChest(), -1.0, 1.0 + getRandomAmountForSpawnChest());
@@ -58,11 +76,12 @@ public class Events implements CommandExecutor {
             }
         }
         Bukkit.broadcastMessage("Заспавнился сундучок для "+ targetPlayer.getName() + " X= "+ ((int) LocationSpawnedChest.getX()) + " Y= "+ ((int) LocationSpawnedChest.getY()) + " Z= "+ ((int) LocationSpawnedChest.getZ()));
-
-
-
-
     }
+
+
+
+
+
     private ItemStack getRandomItem() {
         // Получение случайного типа предмета из перечисления Material
         Material[] materials = Material.values();
@@ -78,7 +97,6 @@ public class Events implements CommandExecutor {
         int maxPlayerOnServer = getRandomAmount(Bukkit.getOnlinePlayers().size());
         return Players.get(maxPlayerOnServer);
     }
-
     private int getRandomAmount(int max) {
         return random.nextInt(max);
     }
