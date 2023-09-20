@@ -8,6 +8,8 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.Inventory;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -23,16 +25,19 @@ public class Events implements CommandExecutor {
     public boolean onCommand(CommandSender commandSender, Command command, String s, String[] args) {
 
 
-        getRandomPlayer();
 
+        setRandomChest();
         return false;
     }
 
     private void setRandomChest(){
         Player targetPlayer = Bukkit.getPlayer(getRandomPlayer());
-        Location  LocationTargetPlayer = targetPlayer.getLocation();
-        LocationTargetPlayer.add(1.0, 1.0, 1.0);
-        LocationTargetPlayer.getBlock().setType(Material.CHEST);
+        Location LocationSpawnedChest = targetPlayer.getLocation();
+        LocationSpawnedChest.add(1.0, -1.0, 1.0);
+        LocationSpawnedChest.getBlock().setType(Material.CHEST);
+        Bukkit.broadcastMessage("Заспавнился сундучок для "+ targetPlayer.getName() + " X= "+ ((int) LocationSpawnedChest.getX()) + " Y= "+ ((int) LocationSpawnedChest.getY()) + " Z= "+ ((int) LocationSpawnedChest.getZ()));
+
+
 
 
     }
