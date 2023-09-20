@@ -32,7 +32,6 @@ public class Events implements CommandExecutor {
 
 
         EventTNT();
-
         return false;
     }
     private void EventTNT() {
