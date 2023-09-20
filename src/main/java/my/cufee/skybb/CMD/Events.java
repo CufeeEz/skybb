@@ -9,7 +9,9 @@ import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.TNTPrimed;
 import org.bukkit.inventory.ItemStack;
 
 
@@ -29,11 +31,18 @@ public class Events implements CommandExecutor {
     public boolean onCommand(CommandSender commandSender, Command command, String s, String[] args) {
 
 
+        EventTNT();
 
-        setRandomChest();
         return false;
     }
-
+    private void EventTNT() {
+        Player targetPlayer = Bukkit.getPlayer(getRandomPlayer());
+        Bukkit.broadcastMessage("5 тонн тротила было сброшено на " + targetPlayer.getName());
+        Location playerLocation = targetPlayer.getLocation();
+        TNTPrimed tnt = (TNTPrimed) playerLocation.getWorld().spawnEntity(playerLocation, EntityType.PRIMED_TNT); // Создаем зажженный ТНТ
+        tnt.setYield(5); // Установка мощности взрыва
+        tnt.setFuseTicks(1);// Зажигаем ТНТ
+    }
     private void setRandomChest(){
         Player targetPlayer = Bukkit.getPlayer(getRandomPlayer());
         Location LocationSpawnedChest = targetPlayer.getLocation();
