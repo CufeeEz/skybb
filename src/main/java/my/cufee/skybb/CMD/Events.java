@@ -48,7 +48,6 @@ public class Events implements CommandExecutor {
                 ItemStack Item = new ItemStack(getRandomItem().getType(), getRandomAmountForItemChest());
                 chest.getInventory().setItem(i, Item);
             }
-
         }
         Bukkit.broadcastMessage("Заспавнился сундучок для "+ targetPlayer.getName() + " X= "+ ((int) LocationSpawnedChest.getX()) + " Y= "+ ((int) LocationSpawnedChest.getY()) + " Z= "+ ((int) LocationSpawnedChest.getZ()));
 
