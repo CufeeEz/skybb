@@ -1,6 +1,5 @@
 package my.cufee.skybb.CMD;
 
-import org.bukkit.Effect;
 import org.bukkit.block.Block;
 import org.bukkit.block.Chest;
 import org.bukkit.Bukkit;
@@ -34,17 +33,40 @@ public class Events implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender commandSender, Command command, String s, String[] args) {
 
-        EventGetRandomEffect();
+        EventBedrockBox();
 
         return false;
     }
+    private void EventBedrockBox(){
+        Player targetPlayer = Bukkit.getPlayer(getRandomPlayer());
 
+        Location playerLocation = targetPlayer.getLocation();
+        playerLocation.add(0.0,-1.0,0.0);
+        int playerLocationX = (int) playerLocation.getX();
+        int playerLocationZ = (int) playerLocation.getZ();
+        double playerLocationXdouble = playerLocationX + 0.50000000;
+        double playerLocationZdouble = playerLocationZ + 0.50000000;
+        Location TeleportCordsPlayer = new Location(Bukkit.getWorld("world"), NormalizedCords(playerLocationXdouble), playerLocation.getY()+1, NormalizedCords(playerLocationZdouble), 0, 0);
+        targetPlayer.teleport(TeleportCordsPlayer);
+        // да, знаю, можно было и лучше это реализовать, но пока мой мозг не умет такое думать :(
+        playerLocation.getBlock().setType(Material.BEDROCK);
+        playerLocation.add(0.0,3.0,0.0);
+        playerLocation.getBlock().setType(Material.BEDROCK);
+        playerLocation.add(1.0,-2.0,0.0);
+        playerLocation.getBlock().setType(Material.BEDROCK);
+        playerLocation.add(-2.0,0.0,0.0);
+        playerLocation.getBlock().setType(Material.BEDROCK);
+        playerLocation.add(1.0,0.0,1.0);
+        playerLocation.getBlock().setType(Material.BEDROCK);
+        playerLocation.add(0.0,0.0,-2.0);
+        playerLocation.getBlock().setType(Material.BEDROCK);
+     }
     private void EventGetRandomEffect() {
         Player targetPlayer = Bukkit.getPlayer(getRandomPlayer());
         List<PotionEffectType> potionEffects = AllPoitoinEffects.givePoitionEffects();
         PotionEffectType randomPotionEffectType = AllPoitoinEffects.getRandomPotionEffect(potionEffects);
 
-        int duration = random.nextInt(12000) + 1200; //  длительности эффекта (от 200 до 800 тиков)
+        int duration = random.nextInt(12000) + 1200; //  длительности эффекта
         int amplifier = random.nextInt(7); //  уровня эффекта (от 0 до 7)
         PotionEffect randomPotionEffect = new PotionEffect(randomPotionEffectType, duration, amplifier);
         String effectName = randomPotionEffect.getType().getName();
@@ -63,7 +85,7 @@ public class Events implements CommandExecutor {
     private void EventRandomChest(){
         Player targetPlayer = Bukkit.getPlayer(getRandomPlayer());
         Location LocationSpawnedChest = targetPlayer.getLocation();
-        LocationSpawnedChest.add(1.0 + getRandomAmountForSpawnChest(), -1.0, 1.0 + getRandomAmountForSpawnChest());
+        LocationSpawnedChest.add(getRandomAmountForSpawnChest(), -1.0, getRandomAmountForSpawnChest());
 
         Block chestBlock = LocationSpawnedChest.getBlock();
         chestBlock.setType(Material.CHEST);
@@ -82,6 +104,13 @@ public class Events implements CommandExecutor {
 
 
 
+    private double NormalizedCords(double cord){
+        if (cord <0 ) {
+            return cord - 1.0;
+        }
+
+        return cord;
+    }
     private ItemStack getRandomItem() {
         // Получение случайного типа предмета из перечисления Material
         Material[] materials = Material.values();
@@ -89,7 +118,7 @@ public class Events implements CommandExecutor {
 
         return new ItemStack(randomMaterial);
     }
-    private String getRandomPlayer(){ // метод получения рандомного игрока из списка онлайна
+    private String getRandomPlayer() { // метод получения рандомного игрока из списка онлайна
         List<String> Players = new ArrayList<>();
         for (Player player : Bukkit.getOnlinePlayers()) {
             Players.add(player.getName()); // Берем имя игрока.
