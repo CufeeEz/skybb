@@ -1,26 +1,21 @@
 package my.cufee.skybb.CMD;
 
+import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.block.Chest;
-import org.bukkit.Bukkit;
-import org.bukkit.Location;
-import org.bukkit.Material;
 
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.EntityType;
-import org.bukkit.entity.Player;
-import org.bukkit.entity.TNTPrimed;
+import org.bukkit.enchantments.Enchantment;
+import org.bukkit.entity.*;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
 import my.cufee.skybb.util.AllPoitoinEffects;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 
 public class Events implements CommandExecutor {
@@ -33,13 +28,37 @@ public class Events implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender commandSender, Command command, String s, String[] args) {
 
-        EventBedrockBox();
+        EventZombie();
 
         return false;
     }
+
+
+
+    private void EventZombie(){
+        Player targetPlayer = Bukkit.getPlayer(getRandomPlayer());
+        Location playerLocation = targetPlayer.getLocation();
+        Zombie ZombieBaby = (Zombie) playerLocation.getWorld().spawnEntity(playerLocation, EntityType.ZOMBIE);
+        ZombieBaby.setBaby(true);
+        ZombieBaby.setCustomName("ШКОЛЬНИК");
+        ZombieBaby.setCustomNameVisible(true);
+        ZombieBaby.setMaxHealth(400D);
+        ZombieBaby.setHealth(400D);
+        ZombieBaby.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 9999, 3));
+        ItemStack ZombieHelmet = new ItemStack(Material.NETHERITE_HELMET);
+        ItemStack ZombieChestplate = new ItemStack(Material.NETHERITE_CHESTPLATE);
+        ItemStack ZombieLeggins = new ItemStack(Material.NETHERITE_LEGGINGS);
+        ItemStack ZombieBoots = new ItemStack(Material.NETHERITE_BOOTS);
+        ZombieBaby.getEquipment().setHelmet(ZombieHelmet);
+        ZombieBaby.getEquipment().setChestplate(ZombieChestplate);
+        ZombieBaby.getEquipment().setLeggings(ZombieLeggins);
+        ZombieBaby.getEquipment().setBoots(ZombieBoots);
+        ItemStack StickForZombie = new ItemStack(Material.STICK);
+        StickForZombie.addUnsafeEnchantment(Enchantment.KNOCKBACK, 3);
+        ZombieBaby.getEquipment().setItemInMainHand(StickForZombie);
+    }
     private void EventBedrockBox(){
         Player targetPlayer = Bukkit.getPlayer(getRandomPlayer());
-
         Location playerLocation = targetPlayer.getLocation();
         playerLocation.add(0.0,-1.0,0.0);
         int playerLocationX = (int) playerLocation.getX();
