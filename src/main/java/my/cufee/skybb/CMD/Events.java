@@ -11,9 +11,11 @@ import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.*;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.PotionMeta;
+import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.potion.*;
 
 import my.cufee.skybb.util.AllPoitoinEffects;
+import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 
 import java.util.*;
@@ -21,15 +23,44 @@ import java.util.*;
 
 public class Events implements CommandExecutor {
     private final Random random;
+    private final JavaPlugin plugin;
 
-    public Events() {
+    public Events(JavaPlugin plugin) {
         this.random = new Random();
+        this.plugin = plugin;
     }
 
     @Override
     public boolean onCommand(CommandSender commandSender, Command command, String s, String[] args) {
 
-        EventPoition();
+        BukkitRunnable task = new BukkitRunnable() {
+            @Override
+            public void run() {
+                int chance = getRandomAmount(100);
+                if (chance <= 60){
+                    giveRandomItem();
+                }
+                if (chance >= 61 & chance <= 65){
+                    EventPoition();
+                }
+                if (chance >= 66 & chance <= 68) {
+                    EventZombie();
+                }
+                if (chance >= 69 & chance <= 74){
+                    EventBedrockBox();
+                }
+                if (chance >= 75 & chance <= 79){
+                    EventGetRandomEffect();
+                }
+                if (chance >= 80 & chance <= 86){
+                    EventTNT();
+                }
+                if (chance >= 87 & chance <= 100){
+                    EventRandomChest();
+                }
+            }
+        };
+        task.runTaskTimer(plugin, 0, 1200);
 
         return false;
     }
@@ -135,7 +166,15 @@ public class Events implements CommandExecutor {
         Bukkit.broadcastMessage("Заспавнился сундучок для "+ targetPlayer.getName() + " X= "+ ((int) LocationSpawnedChest.getX()) + " Y= "+ ((int) LocationSpawnedChest.getY()) + " Z= "+ ((int) LocationSpawnedChest.getZ()));
     }
 
+    private void giveRandomItem(){
+        for (Player player : Bukkit.getOnlinePlayers()) {
+            final ItemStack randomItem = new ItemStack(getRandomItem().getType(), getRandomAmount(10));
+            int randomAmount = getRandomAmount(34);
 
+            player.getInventory().addItem(randomItem);
+            player.sendMessage(ChatColor.translateAlternateColorCodes('&', "&2&o Вы получили ") + randomItem.getAmount() + " " + ChatColor.translateAlternateColorCodes('&', "&c") + randomItem.getType().name());
+        }
+    }
 
 
 
@@ -162,11 +201,11 @@ public class Events implements CommandExecutor {
         return Players.get(maxPlayerOnServer);
     }
     private int getRandomAmount(int max) {
-        return random.nextInt(max);
+        return random.nextInt(max) +1;
     }
     private int getRandomAmountForItemChest() {
         // Получение случайного количества от 1 до 15
-        return random.nextInt(15) + 1;
+        return random.nextInt(15);
     }
     private int getRandomAmountForSpawnChest(){
         return random.nextInt(500 - -500 + 1) + -500;
