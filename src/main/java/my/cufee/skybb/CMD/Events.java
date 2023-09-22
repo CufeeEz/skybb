@@ -10,10 +10,11 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.*;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.potion.PotionEffect;
-import org.bukkit.potion.PotionEffectType;
+import org.bukkit.inventory.meta.PotionMeta;
+import org.bukkit.potion.*;
 
 import my.cufee.skybb.util.AllPoitoinEffects;
+import org.bukkit.util.Vector;
 
 import java.util.*;
 
@@ -28,13 +29,27 @@ public class Events implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender commandSender, Command command, String s, String[] args) {
 
-        EventZombie();
+        EventPoition();
 
         return false;
     }
 
 
-
+    private void EventPoition(){
+        Player targetPlayer = Bukkit.getPlayer(getRandomPlayer());
+        Location playerLocation = targetPlayer.getLocation();
+        ItemStack potion = new ItemStack(Material.LINGERING_POTION);
+        PotionMeta potionMeta = (PotionMeta) potion.getItemMeta();
+        potionMeta.addCustomEffect(new PotionEffect(PotionEffectType.HARM, 5, 5), true);
+// Устанавливаем уровень зелья на 2
+        potionMeta.setBasePotionData(new PotionData(PotionType.INSTANT_DAMAGE, false, true));
+        potion.setItemMeta(potionMeta);
+        targetPlayer.getWorld().spawn(playerLocation.add(0, 1, 0), ThrownPotion.class, thrownPotion -> {
+            thrownPotion.setItem(potion);
+            thrownPotion.setShooter(targetPlayer);
+        });
+        Bukkit.broadcastMessage("Аирдроп был сброшен на " + targetPlayer.getName());
+    }
     private void EventZombie(){
         Player targetPlayer = Bukkit.getPlayer(getRandomPlayer());
         Location playerLocation = targetPlayer.getLocation();
@@ -79,6 +94,7 @@ public class Events implements CommandExecutor {
         playerLocation.getBlock().setType(Material.BEDROCK);
         playerLocation.add(0.0,0.0,-2.0);
         playerLocation.getBlock().setType(Material.BEDROCK);
+        Bukkit.broadcastMessage(targetPlayer.getName() + " зашел в хату по 228");
      }
     private void EventGetRandomEffect() {
         Player targetPlayer = Bukkit.getPlayer(getRandomPlayer());
